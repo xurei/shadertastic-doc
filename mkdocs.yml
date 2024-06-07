@@ -1,0 +1,58 @@
+site_name: Shadertastic
+site_url: https://shadertastic.com/docs
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+plugins:
+  - mkdocs-video:
+      video_muted: True
+      video_controls: True
+      css_style:
+        width: "640px"
+        height: "360px"
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+nav:
+  - Home:
+    - Home: index.md
+    - Installation: installation.md
+    - Common Problems: common_problems.md
+    - FAQ: faq.md
+  - Effects Development:
+    - Getting Started: effect-development/getting-started.md
+    - What is a Shader ?: effect-development/what-is-a-shader.md # explication d'un pixel shader, et en quoi ça diffère d'un code CPU
+    - Writing your first effect: effect-development/first-effect.md # tuto ultra simple avec un shader tout bidon
+    - Effect structure: effect-development/effect-structure.md # le format du fichier .shadertastic : un zip avec meta.json et main.hlsl
+    - OBS shading syntax: effect-development/shader-syntax.md # syntaxe d'OBS
+    - Transition: effect-development/effect-transition.md
+    - Filter: effect-development/effect-filter.md
+    - Parameters Reference:
+        - Overview: effect-development/param/overview.md # TODO J'aime pas le nom -> trouver + clair
+        - Audio Level: effect-development/param/audiolevel.md
+        - Bool: effect-development/param/bool.md
+        - Color with alpha: effect-development/param/color_alpha.md
+        - Double: effect-development/param/double.md
+        - Int: effect-development/param/int.md
+        - List: effect-development/param/list_int.md
+        - Image: effect-development/param/image.md
+        - Source: effect-development/param/source.md
