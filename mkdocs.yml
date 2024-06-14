@@ -19,8 +19,8 @@ theme:
         name: Switch to light mode
 plugins:
   - mkdocs-video:
-      video_muted: True
-      video_controls: True
+      video_muted: true
+      video_controls: true
       css_style:
         width: "640px"
         height: "360px"
@@ -41,7 +41,7 @@ nav:
   - Effects Development:
     - Getting Started: effect-development/getting-started.md
     - What is a Shader ?: effect-development/what-is-a-shader.md # explication d'un pixel shader, et en quoi ça diffère d'un code CPU
-    - Writing your first effect: effect-development/first-effect.md # tuto ultra simple avec un shader tout bidon
+    #- Writing your first effect: effect-development/first-effect.md # tuto ultra simple avec un shader tout bidon
     - Effect structure: effect-development/effect-structure.md # le format du fichier .shadertastic : un zip avec meta.json et main.hlsl
     - OBS shading syntax: effect-development/shader-syntax.md # syntaxe d'OBS
     - Transition: effect-development/effect-transition.md
