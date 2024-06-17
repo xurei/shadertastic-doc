@@ -1,5 +1,4 @@
 site_name: Shadertastic
-site_url: https://doc.shadertastic.com
 theme:
   name: material
   logo: logo512.png
