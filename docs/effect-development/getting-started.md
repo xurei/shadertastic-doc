@@ -53,7 +53,7 @@ The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
   However, some parameters common to all filters will be added automatically (see [Filter Reference](effect-filter.md)).  
   The only common parameter we will actually use in this example is the `image` texture.
 - Copy the content of (TODO où qu'on met le template ? dans le dossier data d'obs c'est un peu dla merde...) `template/main.hlsl` in your own `main.hlsl` file:
-- At this point, you should have a filter that works. Let's check that. In OBS, create a source of you choice, and add a "Shadertastic Filter".
+- At this point, you should have a filter that works. Let's check that. In OBS, create a source of your choice, and add a "Shadertastic Filter".
   Select the effect "Color Swap" in the effect dropdown.
   ![Scren record of OBS with the template filter](getting-started-filter-1.gif)
   You should see the source being flipped horizontally. This is the effect implemented in the template file. Now, let's change this.
