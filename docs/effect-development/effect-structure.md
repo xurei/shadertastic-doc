@@ -62,4 +62,4 @@ It is written in the [OBS Shading Language](shader-syntax.md), which is a subset
 By default, all shaders receive a pre-defined list of parameters. 
 This differs between [transitions](effect-transition.md) and [filters](effect-filter.md).
 
-See [Writing your first effect](first-effect.md) for examples of shader code.
+See [Getting Started](getting-started.md) for examples of shader code.
