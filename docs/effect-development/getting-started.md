@@ -94,28 +94,31 @@ The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
 
 Now, let's go further and write a transition.
   
+---------------------------------
 
-## How does an effect work with Shadertastic ?
-An effect in Shadertatic is composed of two files:
+TODO
 
-- `meta.json` that describes the effect and its parameters
-- `main.hlsl` that contains the shader code.
-
-
-
-## Filter or Transition ?
-Shadertastic allow you to make two kind of effects: **Filters** and **Transitions**.  
-These function in a similar manner, but some common parameters are only available in one or the other.
-For example, a transition always has a `time` parameter, going from 0.0 to 1.0. 
-A filter may not have it, depending on its configuration.
-
-## Votre première transition
-- déformer/déplacer l'image ? <-- transi
-AJOUTER LIEN GITHUB OU GIST
-### Setup du dossier du filtre
-### meta.json
-### main.hlsl
-
-
-## Packaging your effect
-Comment créer un fichier .shadertastic
+[//]: # (## How does an effect work with Shadertastic ?)
+[//]: # (An effect in Shadertatic is composed of two files:)
+[//]: # ()
+[//]: # (- `meta.json` that describes the effect and its parameters)
+[//]: # (- `main.hlsl` that contains the shader code.)
+[//]: # ()
+[//]: # ()
+[//]: # ()
+[//]: # (## Filter or Transition ?)
+[//]: # (Shadertastic allow you to make two kind of effects: **Filters** and **Transitions**.)  
+[//]: # (These function in a similar manner, but some common parameters are only available in one or the other.)
+[//]: # (For example, a transition always has a `time` parameter, going from 0.0 to 1.0.) 
+[//]: # (A filter may not have it, depending on its configuration.)
+[//]: # ()
+[//]: # (## Votre première transition)
+[//]: # (- déformer/déplacer l'image ? <-- transi)
+[//]: # (AJOUTER LIEN GITHUB OU GIST)
+[//]: # (### Setup du dossier du filtre)
+[//]: # (### meta.json)
+[//]: # (### main.hlsl)
+[//]: # ()
+[//]: # ()
+[//]: # (## Packaging your effect)
+[//]: # (Comment créer un fichier .shadertastic)
