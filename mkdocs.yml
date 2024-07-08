@@ -28,6 +28,8 @@ plugins:
         width: "640px"
         height: "360px"
 markdown_extensions:
+  - admonition
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -49,8 +51,8 @@ nav:
     #- Writing your first effect: effect-development/first-effect.md # tuto ultra simple avec un shader tout bidon
     - Effect structure: effect-development/effect-structure.md # le format du fichier .shadertastic : un zip avec meta.json et main.hlsl
     - OBS shading syntax: effect-development/shader-syntax.md # syntaxe d'OBS
-    - Transition: effect-development/effect-transition.md
-    - Filter: effect-development/effect-filter.md
+    - Transition Reference: effect-development/effect-transition-reference.md
+    - Filter Reference: effect-development/effect-filter-reference.md
 #    - Parameters Reference:
 #        - Overview: effect-development/param/overview.md # TODO J'aime pas le nom -> trouver + clair
 #        - Audio Level: effect-development/param/audiolevel.md

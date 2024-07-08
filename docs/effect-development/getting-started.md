@@ -16,8 +16,8 @@ If you didn't configure it yet, follow these steps:
   ![type:video](howto_config.mp4)  
   For this example, we'll assume that you've chosen `C:\Users\John\Documents\Shadertastic-effects`
 - Check the `Developer mode` to activate it. It will be useful to hot reload the effects you are creating.
-- In the folder you've chosen, add two subfolders `filters` and `transitions`
-- You should have this structure at this point:  
+- In the folder you've chosen, add two subfolders `filters` and `transitions`.  
+You should have this structure:  
   ```
   C:\Users\John\Documents\Shadertastic-effects
     ∟ filters
@@ -25,12 +25,11 @@ If you didn't configure it yet, follow these steps:
   ```
 - (in the future, optionnal) Download and install the Shadertastic SDK and unzip it in your chosen folder.
 
-## Your first effect: a color swap filter
-We will write a very simple filter that swaps the color in this fashion: Red becomes Green, Green becomes Blue, Blue become Red.  
-(GIF de l'effet)  
+## Your first filter: Color Adjust
+We will write a very simple filter that multiply each color channel (red, green, blue, alpha) with a number between 0.0 and 2.0.  
 The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
 
-- In `C:\Users\John\Documents\Shadertastic-effects\filters`, create a new folder named `color-swap`
+- In `C:\Users\John\Documents\Shadertastic-effects\filters`, create a new folder named `color-adjust`
 - In this folder, add two text files: `meta.json` and `main.hlsl`. The structure should look like this:
   ```
   C:\Users\John\Documents\Shadertastic-effects
@@ -41,45 +40,105 @@ The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
 - In `meta.json`, add this:  
   ```json
   {
-    "label": "Color Swap",
+    "label": "Color Adjust",
     "revision": 1,
     "steps": 1,
     "input_time": false,
     "parameters": [
+      {
+        "name": "red_amount",
+        "label": "Red",
+        "type": "double",
+        "slider": true,
+        "min": 0.0,
+        "max": 2.0,
+        "default": 1.0,
+        "step": 0.01
+      },
+      {
+        "name": "green_amount",
+        "label": "Green",
+        "type": "double",
+        "slider": true,
+        "min": 0.0,
+        "max": 2.0,
+        "default": 1.0,
+        "step": 0.01
+      },
+      {
+        "name": "blue_amount",
+        "label": "Blue",
+        "type": "double",
+        "slider": true,
+        "min": 0.0,
+        "max": 2.0,
+        "default": 1.0,
+        "step": 0.01
+      },
+      {
+        "name": "alpha_amount",
+        "label": "Alpha",
+        "type": "double",
+        "slider": true,
+        "min": 0.0,
+        "max": 2.0,
+        "default": 1.0,
+        "step": 0.01
+      }
     ]
   }
   ```
-  This file describes the filter and its parameters. In this example, we won't need any specific parameter.
-  However, some parameters common to all filters will be added automatically (see [Filter Reference](effect-filter.md)).  
-  The only common parameter we will actually use in this example is the `image` texture.
+  This file describes the filter and its parameters.  
+  Some common parameters for all filters will be added automatically (see [Filter Reference](effect-filter.md)).  
+  The only common parameter we will use in this example is the `image` texture.
 - Copy the content of (TODO où qu'on met le template ? dans le dossier data d'obs c'est un peu dla merde...) `template/main.hlsl` in your own `main.hlsl` file:
-- At this point, you should have a filter that works. Let's check that. In OBS, create a source of your choice, and add a "Shadertastic Filter".
-  Select the effect "Color Swap" in the effect dropdown.
+- At this point, you should have a filter that works. Let's check that.  
+  In OBS, create a source of your choice, and add a "Shadertastic Filter".
+  Select the effect "Color Adjust" in the effect dropdown.
   ![Scren record of OBS with the template filter](getting-started-filter-1.gif)
-  You should see the source being flipped horizontally. This is the effect implemented in the template file. Now, let's change this.
-- In the `main.hlsl` file, the only part that you should look at now is the `EffectLinear` function:  
+  You should see the source being flipped horizontally. 
+  This is the effect implemented in the template file. Now, let's change this with the behaviour we expect.
+- In `main.hlsl`, locate the line starting with `// Specific parameters of the shader`:
+  ```hlsl
+  // Specific parameters of the shader. They must be defined in the meta.json file next to this one.
+  uniform float random_amount;
+  ```  
+  Replace it with:
+  ```hlsl
+  // Specific parameters of the shader. They must be defined in the meta.json file next to this one.
+  uniform float red_amount;
+  uniform float green_amount;
+  uniform float blue_amount;
+  uniform float alpha_amount;
+  ```
+  Those lines define the variables in the shader that are linked to the custom parameters defined in `meta.json`.  
+
+- !!! warning
+      Make sure that the name of the parameters are the same in `meta.json` (the "name" field) and `main.hlsl` (name of the variable).
+
+- In `main.hlsl`, locate the `EffectLinear` function:  
   ```hlsl
   float4 EffectLinear(float2 uv)
   {
     // -----> YOUR CODE GOES HERE <-----
   
-    // Here is an basic example that will flip the image
+    // Here is a basic example that will flip the image
     uv[0] = 1-uv[0];
     return image.Sample(textureSampler, uv);
   }
   ```
-  Change it with this content: 
+  Replace it with: 
   ```hlsl
   float4 EffectLinear(float2 uv)
   {
     // Pick the currently processed pixel from the image texture and store it as a float4
     float4 pixel = image.Sample(textureSampler, uv);
 
-    // Swap the first 3 values of the pixel R -> G, G -> B, B -> R
-    float temp = pixel[2];
-    pixel[2] = pixel[1];
-    pixel[1] = pixel[0];
-    pixel[0] = temp;
+    // Multiply the color channels with the matching parameter we defined 
+    pixel.r *= red_amount;
+    pixel.g *= green_amount;
+    pixel.b *= blue_amount;
+    pixel.a *= alpha_amount;
 
     // Return the modified pixel as the result
     return pixel;
@@ -88,15 +147,41 @@ The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
   - Let's look at the changes we've made. 
     In OBS, select the "Shadertastic Filter" you've previously created, and click the "Reload" button.
     (if you don't see it, make sure you have checked the `Developer Mode` in the Shadertastic Settings)
-    ![Scren record of OBS with the color swap filter](getting-started-filter-2.gif)
+    ![Scren record of OBS with the color adjust filter](getting-started-filter-2.gif)
   - Congratulation! You just created your very first effect. 
-    This is a very simple one, but hopefully you better understand now how to create your own effects.
+    This is a very simple one, but hopefully you better understand now how to create your own.
 
 Now, let's go further and write a transition.
   
 ---------------------------------
 
-TODO
+## Your first transition: Slide Scene
+As you will see, writing a transition is basically the same process as writing a filter. A few things are different,
+but in essence, if you understood how to write a filter, writing a transition should be easy.
+
+!!! notice 
+    The most notable difference between a filter and a transition is:
+    
+    - a filter takes an `image` parameter (*i.e.* the image being filtered), 
+    - a transition takes two parameters: `tex_a` and a `tex_b` (*i.e.* the image of the "previous" scene and the "next" scene) 
+
+We will write a transition that will move the "previous" scene to the left, and show the "next" scene underneath.  
+The scene will not move at the same speed based on the vertical position of the pixel.
+An image is probably more explainatory than words:
+
+(GIF DE L'EFFET)
+
+The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
+
+- In `C:\Users\John\Documents\Shadertastic-effects\transitions`, create a new folder named `slide-scene`
+- In this folder, add two text files: `meta.json` and `main.hlsl`. The structure should look like this:
+  ```
+  C:\Users\John\Documents\Shadertastic-effects
+    ∟ transitions
+      ∟ meta.json
+      ∟ main.hlsl
+  ```
+
 
 [//]: # (## How does an effect work with Shadertastic ?)
 [//]: # (An effect in Shadertatic is composed of two files:)

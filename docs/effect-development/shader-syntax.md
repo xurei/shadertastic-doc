@@ -2,7 +2,10 @@
 
 *(Original source: [obs-StreamFX documentation](https://github.com/Xaymar/obs-StreamFX/wiki/OBS-Shading-Language) under [CC BY](https://creativecommons.org/licenses/by/4.0/))* 
 
-The baseline for the shader language libOBS uses is HLSL, [for which you can find documentation here](https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl). libOBS modifies this so it works across all of its supported graphics APIs, sacrificing functionality and versatility for compatibility. As a result, some effects that would be possible with ease in GLSL or HLSL directly do not work in libOBS's shader language. For the sake of all future documentation, the language will be referred to as OBS-SL, since it mixes and matches many different langauge constructs into one.
+The baseline for the shader language libOBS uses is HLSL, [for which you can find documentation here](https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl). 
+libOBS modifies this so it works across all of its supported graphics APIs, sacrificing functionality and versatility for compatibility. 
+As a result, some effects that would be possible with ease in GLSL or HLSL directly do not work in libOBS's shader language. 
+For the sake of all future documentation, the language will be referred to as OBS-SL, since it mixes and matches many different language constructs into one.
 
 ## Defines
 OBS Studio includes a Pre-Processor that adds some defines.
