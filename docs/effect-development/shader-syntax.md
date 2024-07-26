@@ -108,3 +108,74 @@ Maximum anisotropy to allow for sampling, as a number in the range of 1..16.
 
 ##### `BorderColor`
 Border color when the AddressU/V/W mode is set to Border. Only applicable on DirectX, as the BorderColor is not set on OpenGL.
+
+## Other reserved/special meaning keywords
+
+- `ViewProj` and `World`
+    - all Vertex shaders are prepended with `uniform float4x4 ViewProj;`
+        - Seen at `libobs/graphics/effect-parse.c:ep_makeshaderstring()`
+    - `ViewProj` and `World` are treated as special parameters (hint stored in parser state)
+        - Seen at `libobs/graphics/effect-parse.c:ep_compile_param()`
+
+- Parameters annotations `uniform type param_name<annotations...> = initializer;`
+    - not used in Shadertastic, information stored in `meta.json`
+        - Seen at `libobs/graphics/effect-parse.c:ep_compile_annotations()`
+    - Allows hinting like this :
+```c
+uniform float vertical_shift<
+    string label = "vertical shift";
+    string widget_type = "slider";
+    float minimum = -5.0;
+    float maximum = 5.0;
+    float step = 0.001;
+> = 0.4;
+```
+
+## Various warnings we already seen at least once
+
+### Reserved double underscore in functions names
+
+On OpenGL with linux Intel driver at least, you should not use double-underscore as part of functions names.
+```
+0:47(7): warning: identifier 'printValue__digitBin' uses reserved '__' string
+```
+
+## Various obscure errors we already seen at least once
+
+### `int('-')` or `int c = '-';` on GLSL on Intel driver on Debian 12
+
+This code :
+```c
+int c = int('-');
+```
+Or this code :
+```c
+somefunc( int('-') );
+```
+Produces this message with a wrong line number :
+```
+error: Error compiling shader:
+0:87(22): error: syntax error, unexpected invalid token, expecting ')'
+
+
+debug: Compiler warnings/errors for try2.hlsl (Pixel shader, technique Draw, pass 0):
+0:87(22): error: syntax error, unexpected invalid token, expecting ')'
+error: device_pixelshader_create (GL) failed
+```
+
+This variant :
+```c
+int c = '-';
+```
+Produces this message with a wrong line number :
+```
+error: Error compiling shader:
+0:87(18): error: syntax error, unexpected invalid token
+
+
+debug: Compiler warnings/errors for try2.hlsl (Pixel shader, technique Draw, pass 0):
+0:87(18): error: syntax error, unexpected invalid token
+
+error: device_pixelshader_create (GL) failed
+```
+
