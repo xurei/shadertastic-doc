@@ -2,6 +2,7 @@
 
 *(Original source: [obs-StreamFX documentation](https://github.com/Xaymar/obs-StreamFX/wiki/OBS-Shading-Language) under [CC BY](https://creativecommons.org/licenses/by/4.0/))*
 
+## Execution context
 The baseline for the shader language libOBS uses is HLSL, [for which you can find documentation here](https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl). 
 libOBS modifies this so it works across all of its supported graphics APIs, sacrificing functionality and versatility for compatibility. 
 As a result, some effects that would be possible with ease in GLSL or HLSL directly do not work in libOBS's shader language. 
@@ -14,15 +15,12 @@ When `libobs-opengl` is in use, the OBS-SL shader is transpiled into GLSL. It wi
 
 ... making life harder when a compilation errors came from your shader.
 
-## Defines
-OBS Studio includes a Pre-Processor that adds some `#define`.
-It allows you to have some `#ifdef _XYZ`...`#endif` blocks if you really need different code on both platforms.
+## OBS do a HLSL to GLSL function mapping
 
-### `_D3D11`
-Defined if `libobs-d3d11` is in use.
+As a rule of thumb, always use the HLSL native function, OBS will replace occurences with the GLSL one, the reverse assumption is mostly false.
 
-### `_OPENGL`
-Defined if `libobs-opengl` is in use.
+To give simple examples, you will have to use `lerp()` instead of `mix()` and `frac()` instead of `fract()` in your OBS-SL code to make OBS happy.
+See [syntax/shader-transpilation.md](syntax/shader-transpilation.md) to have a list of what is defined and translated by OBS and Shadertastic.
 
 ## Data Storage
 Similar to HLSL, OBS-SL supports storage, transfer and modification of data.
@@ -61,41 +59,18 @@ Storage specifiers seem to only be used by the OpenGL backend.
 
 Note: despite the `string` type availability, there is no string-handling functions at all, and `int c = 'a';` is not a usable thing neither.
 
-## OBS-SL do a HLSL to GLSL function mapping
-
-As a rule of thumb, always use the HLSL native function, OBS will replace occurences with the GLSL one, the reverse assumption is mostly false.
-
-To give simple examples, you will have to use `lerp()` instead of `mix()` and `frac()` instead of `fract()` in your OBS-SL code to make OBS happy.
-
-As OBS 30, `gl-shaderparser.c` have a comment that recap what they actually do:
-```c
-/*
- * NOTE: HLSL-> GLSL intrinsic conversions
- *   atan2    -> atan
- *   clip     -> (unsupported)
- *   ddx      -> dFdx
- *   ddy      -> dFdy
- *   fmod     -> mod (XXX: these are different if sign is negative)
- *   frac     -> fract
- *   lerp     -> mix
- *   lit      -> (unsupported)
- *   log10    -> (unsupported)
- *   mul      -> (change to operator)
- *   rsqrt    -> inversesqrt
- *   saturate -> (use clamp)
- *   sincos   -> (map to manual sin/cos calls)
- *   tex*     -> texture
- *   tex*grad -> textureGrad
- *   tex*lod  -> textureLod
- *   tex*bias -> (use optional 'bias' value)
- *   tex*proj -> textureProj
- *
- *   All else can be left as-is
- */
-```
-
 ### Arrays
-At the time of writing this, Arrays are only supported when DirectX is being used by libOBS. The [patch](https://github.com/obsproject/obs-studio/pull/4864) to make it available in OpenGL was retracted at the request of the current OBS Project team.
+At the time of writing this, `uniform`s as arrays are only supported when DirectX is being used by libOBS. The [patch](https://github.com/obsproject/obs-studio/pull/4864) to make it available in OpenGL was retracted at the request of the current OBS Project team.
+
+So you can't really use `uniform float[20] something;` from the CPU to the GPU world, but some `const` or `static` fixed tables in the shader source-code is fine. You may need to use some `#ifdef` for initialisation :
+```c
+#define POW10_TABLE_VALUES 1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000
+#ifdef _OPENGL
+	const int pow10_table[10] = int[10](POW10_TABLE_VALUES);
+#else
+	static int pow10_table[10] = {POW10_TABLE_VALUES};
+#endif
+```
 
 ## Keywords
 A limited subset of keywords are supported, other keywords may work if they match across both langauges.
@@ -173,66 +148,6 @@ uniform float vertical_shift<
     float step = 0.001;
 > = 0.4;
 ```
-
-## OBS-specific constants and functions additions
-
-### `libobs-d3d11`
-
-The prelude of any transpiled vertex or pixel shader before passing them to DirectX as OBS 30 is:
-```c
-static const bool obs_glsl_compile = false;
-```
-
-No `obs_load_2d` or `obs_load_3d` is defined.
-
-### `libobs-opengl`
-
-The prelude of any transpiled vertex or pixel shader before passing them to OpenGL as OBS 30 is:
-```c
-const bool obs_glsl_compile = true;
-
-vec4 obs_load_2d(sampler2D s, ivec3 p_lod) {
-    int lod = p_lod.z;
-    vec2 size = textureSize(s, lod);
-    vec2 p = (vec2(p_lod.xy) + 0.5) / size;
-    vec4 color = textureLod(s, p, lod);
-    return color;
-}
-
-vec4 obs_load_3d(sampler3D s, ivec4 p_lod) {
-    int lod = p_lod.w;
-    vec3 size = textureSize(s, lod);
-    vec3 p = (vec3(p_lod.xyz) + 0.5) / size;
-    vec4 color = textureLod(s, p, lod);
-    return color;
-}
-```
-
-## Writing conventions for matrices
-
-Programmation languages defines two distincts things on this topic around `row-major` and `column-major` matrices.
-
-1. they specifies in which order individual values should be layered out in RAM, physically
-    - This is hardcoded in compilators
-    - This impacts performance in case of programs running on CPU if there is data caches and RAM / CPU speed difference.
-    - In the GPU world, many common CPU world assumptions aren't true about how is it run and what is fast or not.
-2. they defines a concrete syntax to access items from a multi-dimentionnal type.
-
-In C, C++, HLSL the syntax is:
-```c
-some_2d_var[row][col] = value;
-```
-
-In GLSL the syntax is:
-```c
-some_2d_var[col][row] = value;
-```
-
-The hardware is not different if running GLSL or HLSL and GPU have many hardcoded functions, there are the one to trust, compilers do the right thing.
-
-Depending how you have filled some matricies and vectors, you may have a point of view of `projected_vec = input_vec * projection_matrix` is correct or `projected_vec = projection_matrix * input_vec` is correct. OBS makes projections for you, `ViewProj` is filled in the right way on both cases, but it may go wrong if you try to alter some of it's values.
-
-As time of writing, I am not confident enough to give instructions of what is a good or a bad idea. I am not a professionnal graphics programmer, if you are: please help us to write a better paragraph here.
 
 ## Various warnings we already seen at least once
 
