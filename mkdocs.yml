@@ -51,6 +51,7 @@ nav:
     #- Writing your first effect: effect-development/first-effect.md # tuto ultra simple avec un shader tout bidon
     - Effect structure: effect-development/effect-structure.md # le format du fichier .shadertastic : un zip avec meta.json et main.hlsl
     - OBS shading syntax: effect-development/shader-syntax.md # syntaxe d'OBS
+    - OBS shader transpilation: effect-development/syntax/shader-transpilation.md # Spéficificités HLSL/GLSL/OBS-SL
     - Transition Reference: effect-development/effect-transition-reference.md
     - Filter Reference: effect-development/effect-filter-reference.md
 #    - Parameters Reference:
