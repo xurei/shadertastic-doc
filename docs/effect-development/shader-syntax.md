@@ -59,6 +59,10 @@ Storage specifiers seem to only be used by the OpenGL backend.
 
 Note: despite the `string` type availability, there is no string-handling functions at all, and `int c = 'a';` is not a usable thing neither.
 
+### Operators
+
+They are much like in C. But as HLSL official documentation says: unlike short-circuit evaluation of &&, ||, and ?: in C, HLSL expressions never short-circuit an evaluation because they are vector operations. All sides of the expression are always evaluated.
+
 ### Arrays
 At the time of writing this, `uniform`s as arrays are only supported when DirectX is being used by libOBS. The [patch](https://github.com/obsproject/obs-studio/pull/4864) to make it available in OpenGL was retracted at the request of the current OBS Project team.
 
