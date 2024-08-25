@@ -73,40 +73,6 @@ vec4 obs_load_3d(sampler3D s, ivec4 p_lod) {
 }
 ```
 
-## OBS-specific constants and functions additions
-
-### `libobs-d3d11`
-
-The prelude of any transpiled vertex or pixel shader before passing them to DirectX as OBS 30 is:
-```c
-static const bool obs_glsl_compile = false;
-```
-
-No `obs_load_2d` or `obs_load_3d` is defined.
-
-### `libobs-opengl`
-
-The prelude of any transpiled vertex or pixel shader before passing them to OpenGL as OBS 30 is:
-```c
-const bool obs_glsl_compile = true;
-
-vec4 obs_load_2d(sampler2D s, ivec3 p_lod) {
-    int lod = p_lod.z;
-    vec2 size = textureSize(s, lod);
-    vec2 p = (vec2(p_lod.xy) + 0.5) / size;
-    vec4 color = textureLod(s, p, lod);
-    return color;
-}
-
-vec4 obs_load_3d(sampler3D s, ivec4 p_lod) {
-    int lod = p_lod.w;
-    vec3 size = textureSize(s, lod);
-    vec3 p = (vec3(p_lod.xyz) + 0.5) / size;
-    vec4 color = textureLod(s, p, lod);
-    return color;
-}
-```
-
 ## Writing conventions for matrices
 
 Programmation languages defines two distincts things on this topic around `row-major` and `column-major` matrices.
