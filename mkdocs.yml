@@ -45,6 +45,7 @@ nav:
     - Installation: installation.md
 #    - Common Problems: common_problems.md
 #    - FAQ: faq.md
+    - Demo Assets: demo-assets.md
   - Effects Development:
     - Getting Started: effect-development/getting-started.md
     - What is a Shader ?: effect-development/what-is-a-shader.md # explication d'un pixel shader, et en quoi ça diffère d'un code CPU
