@@ -58,6 +58,7 @@ Storage specifiers seem to only be used by the OpenGL backend.
 | `sampler_state` | `SamplerState` | Metadata only   |
 
 Notes:
+
 - `float2x2` (rotation) matrix is supported by OBS-SL parser but not translated, only float3x3, 3x4 and 4x4 are usable.
 - despite the `string` type availability, there is no string-handling functions at all, and `int c = 'a';` is not a usable thing neither.
 
