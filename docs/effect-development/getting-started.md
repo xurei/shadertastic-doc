@@ -16,28 +16,35 @@ If you didn't configure it yet, follow these steps:
   ![type:video](howto_config.mp4)  
   For this example, we'll assume that you've chosen `C:\Users\John\Documents\Shadertastic-effects`
 - Check the `Developer mode` to activate it. It will be useful to hot reload the effects you are creating.
-- In the folder you've chosen, add two subfolders `filters` and `transitions`.  
+- In the folder you've chosen, download [the custom effect templates](https://github.com/xurei/shadertastic-custom-effect-templates)
 You should have this structure:  
   ```
   C:\Users\John\Documents\Shadertastic-effects
     ∟ filters
+      ∟ template
     ∟ transitions
+      ∟ template
   ```
 - (in the future, optionnal) Download and install the Shadertastic SDK and unzip it in your chosen folder.
 
 ## Your first filter: Color Adjust
 We will write a very simple filter that multiply each color channel (red, green, blue, alpha) with a number between 0.0 and 2.0.  
-The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
+This is obviously a very simple, low-value effect, and you should probably not actually use it (the Color Correction from OBS is much better).
+However, it is a good start to understand how everything works.
+[//]: # (The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST)
 
-- In `C:\Users\John\Documents\Shadertastic-effects\filters`, create a new folder named `color-adjust`
-- In this folder, add two text files: `meta.json` and `main.hlsl`. The structure should look like this:
+- In `C:\Users\John\Documents\Shadertastic-effects\filters`, copy the `template` folder and rename it as `color-adjust`
+- The structure should look like this:
   ```
   C:\Users\John\Documents\Shadertastic-effects
+    ∟ ...
     ∟ filters
-      ∟ meta.json
-      ∟ main.hlsl
+      ∟ color-adjust
+        ∟ meta.json
+        ∟ main.hlsl
+      ∟ ...
   ```
-- In `meta.json`, add this:  
+- Change `meta.json` to this:  
   ```json
   {
     "label": "Color Adjust",
@@ -89,9 +96,8 @@ The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
   }
   ```
   This file describes the filter and its parameters.  
-  Some common parameters for all filters will be added automatically (see [Filter Reference](effect-filter.md)).  
-  The only common parameter we will use in this example is the `image` texture.
-- Copy the content of (TODO où qu'on met le template ? dans le dossier data d'obs c'est un peu dla merde...) `template/main.hlsl` in your own `main.hlsl` file:
+  Some parameters are automatically added to all filters (see [Filter Reference](effect-filter.md)).  
+  Here, we will use the `image` parameter, which is a texture that contains the source being filtered.
 - At this point, you should have a filter that works. Let's check that.  
   In OBS, create a source of your choice, and add a "Shadertastic Filter".
   Select the effect "Color Adjust" in the effect dropdown.
@@ -114,7 +120,8 @@ The code of this effect can be found here: AJOUTER LIEN GITHUB OU GIST
   Those lines define the variables in the shader that are linked to the custom parameters defined in `meta.json`.  
 
 - !!! warning
-      Make sure that the name of the parameters are the same in `meta.json` (the "name" field) and `main.hlsl` (name of the variable).
+      It is important that the name of the parameters are the same in `meta.json` (the "name" field) and `main.hlsl` (name of the variable).
+      That is how Shadertastic will understand what is what, and how it should genertate the UI in OBS.
 
 - In `main.hlsl`, locate the `EffectLinear` function:  
   ```hlsl
