@@ -3,6 +3,7 @@ theme:
   name: material
   logo: logo512.png
   favicon: logo192.png
+  custom_dir: theme_override
   features:
     - navigation.tabs
   palette:

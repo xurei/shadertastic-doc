@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+ Custom front matter
+{% block extrahead %}
+  <!-- Extra style sheets (can't be set in mkdocs.yml due to content hash) -->
+  <link
+    rel="stylesheet"
+    href="{{ 'assets/stylesheets/custom.css' | url }}"
+  />
+{% endblock %}
+
+<!-- Announcement bar -->
+{% block announce %}
+	<p>
+		This documentation is a <strong>WORK IN PROGRESS</strong> !
+		<br/>
+		We are looking for help to write it. If you want to contribute writing them,
+		please <a href="https://github.com/xurei/shadertastic-doc/issues/new">Open an Issue on Github</a>
+	</p>
+{% endblock %}
+
+<!-- Theme-related JavaScript -->
+{% block scripts %}
+  {{ super() }}
+
+  <!-- Extra JavaScript (can't be set in mkdocs.yml due to content hash) -->
+<!--  <script src="{{ 'assets/javascripts/custom.js' | url }}"></script>-->
+{% endblock %}
