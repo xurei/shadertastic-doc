@@ -3,10 +3,9 @@ A Shader (more specifically a Pixel Shader) is a script running on your GPU,
 allowing to alter an image or a frame for each pixel.
 
 The main difference with code running on your CPU is that **it is executed in parallel, on time per pixel**.  
-This video from NVIDIA explains how a shader works in a simplified manner:
-![type:video](https://www.youtube.com/embed/-P28LKWTzrI?si=kElHGJcO7RMw45ZE)
+There is 3 great handmade drawings helping catch this idea here: https://thebookofshaders.com/01/ (see Why are shaders fast?)
 
-Shadertastic uses Pixel Shaders to create its effects. 
+Shadertastic uses Pixel Shaders to create its effects (also named Fragment Shaders).
 
 ## What can you do with a Shader
 
