@@ -3,3 +3,4 @@ mkdocs-material
 
 #Add pip package if needed
 mkdocs-video
+mkdocs-awesome-nav

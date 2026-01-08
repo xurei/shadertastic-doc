@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 docker build . -t shadertastic-docs
 
 # To create the boilerplate:
