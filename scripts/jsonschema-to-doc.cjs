@@ -27,8 +27,6 @@ function parseParam(param_name, param_schema) {
 
 ${param_schema.markdownDescription.split('\n')[0]}
 
-## Description
-
 ${param_schema.markdownDescription.split('\n').slice(1).join('\n')}
 
 ## Shader Equivalent
@@ -36,7 +34,22 @@ ${param_schema.markdownDescription.split('\n').slice(1).join('\n')}
 \`\`\`hlsl
 ${param_schema.shaderparam} parameter_name;
 \`\`\`
+`);
+	
+	if (param_schema.example) {
+	//language=markdown
+	out.push(`
+## Example
 
+${/*param_schema.example.replace(/^```/g, '```json\n').replace(/```$/g, '\n```')*/''}
+\`\`\`json
+${JSON.stringify(JSON.parse(param_schema.example.replace(/```/g, '')), null, '  ')}
+\`\`\`
+	`);
+	}
+	
+	//language=markdown
+	out.push(`
 ## Properties
 ${jsonSchemaToMarkdownTable(param_schema)}
 	`);
@@ -51,29 +64,37 @@ ${jsonSchemaToMarkdownTable(param_schema)}
  * @return {string} - The Markdown table representation
  */
 function jsonSchemaToMarkdownTable(schema) {
-	const requiredList = schema.required;
 	// Table header
 	let markdownTable =
-		'| <div style="width: 6.5em">Property</div> | Type | Required | If absent | Description |\n' +
+		'| <div style="width: 7.5em">Property</div> | Type | Required | If absent | Description |\n' +
 		'|------------------------------------------|------|----------|-----------|-------------|\n';
 	
-	props = Object.entries(schema.properties).map(([propName, prop]) => {
+	const lines = [];
+	addMarkdownTableLines(schema, [], lines);
+	return markdownTable + lines.join('\n');
+}
+
+function addMarkdownTableLines(schema, prefix, /* Array */ lines) {
+	const requiredList = schema.required || [];
+	console.log(schema);
+	console.log(schema.required, requiredList);
+	const props = Object.entries(schema.properties).map(([propName, prop]) => {
 		return [
 			propName,
 			{
 				...prop,
-				required: requiredList.findIndex(k => k===propName)
+				isRequired: requiredList.findIndex(k => k===propName) > -1
 			}
 		];
 	});
 	props.sort((a,b) => {
-		if (a[1].required === b[1].required) {
+		if (a[1].isRequired === b[1].isRequired) {
 			return a[0].localeCompare(b[0]);
 		}
 		else {
-			return b[1].required - a[1].required;
+			return b[1].isRequired - a[1].isRequired;
 		}
-	})
+	});
 	
 	// Process each property in the schema
 	for (const [propName, propSchema] of props) {
@@ -82,20 +103,27 @@ function jsonSchemaToMarkdownTable(schema) {
 		
 		// Determine if required (in this implementation we'll infer from the schema)
 		// In real JSON Schema, required properties are typically defined at the parent level
-		const required = requiredList.findIndex(k => k===propName) >= 0 ? 'Yes' : 'No';
+		const isRequired = requiredList.findIndex(k => k===propName) >= 0 ? 'Yes' : 'No';
 		
 		// Default value if not provided
 		const ifAbsent = propSchema.default !== undefined ?
 			`\`${JSON.stringify(propSchema.default)}\`` : '-';
 		
 		// Get description
-		const description = propSchema.description || propSchema.markdownDescription || '-';
+		let description = propSchema.description || propSchema.markdownDescription || '-';
+		description = description.replaceAll(/\n/g, '<br>');
 		
+		const fullName = [...prefix, propName];
 		// Add the row to the table
-		markdownTable += `| \`${propName}\` | ${type} | ${required} | ${ifAbsent} | ${description} |\n`;
+		lines.push(`| \`${fullName.join('.')}\` | ${type} | ${isRequired} | ${ifAbsent} | ${description} |`);
+		
+		console.log(propSchema.properties);
+		
+		// Recurse in options
+		if (propSchema.properties && Object.keys(propSchema.properties).length > 0) {
+			addMarkdownTableLines(propSchema, fullName, lines);
+		}
 	}
-	
-	return markdownTable;
 }
 
 /**
