@@ -1,7 +1,7 @@
 ## meta.json
 This is the definition of the effect. 
 It provides all the information for Shadertastic to understand how to use it 
-and what [parameters](param/overview.md) it requires. 
+and what parameters it requires. 
 
 A typical meta.json file looks like this:
 ```json
@@ -52,8 +52,8 @@ For filters only. This field indicates that the filter is changing over time.
 #### parameters
 An array containing the details of each parameter defined for the effect.
 
-Each object within the array defines a parameter. See [parameter overview](param/overview.md) 
-and the matching parameter page for details of each parameter type. 
+Each object within the array defines a parameter. See "Parameters Reference" 
+in the side navigation of this documentation for each parameter type. 
 
 ## main.hlsl
 This is the pixel shader code. 

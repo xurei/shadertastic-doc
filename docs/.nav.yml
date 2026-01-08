@@ -6,25 +6,13 @@ nav:
   - Home:
       - Home: index.md
       - Installation: installation.md
-      #    - Common Problems: common_problems.md
-      #    - FAQ: faq.md
       - Demo Assets: demo-assets.md
   - Effects Development:
       - Getting Started: effect-development/getting-started.md
-      - What is a Shader ?: effect-development/what-is-a-shader.md # explication d'un pixel shader, et en quoi ça diffère d'un code CPU
-      #- Writing your first effect: effect-development/first-effect.md # tuto ultra simple avec un shader tout bidon
-      - Effect structure: effect-development/effect-structure.md # le format du fichier .shadertastic : un zip avec meta.json et main.hlsl
-      - OBS shading syntax: effect-development/shader-syntax.md # syntaxe d'OBS
-      - OBS shader transpilation: effect-development/syntax/shader-transpilation.md # Spéficificités HLSL/GLSL/OBS-SL
+      - What is a Shader ?: effect-development/what-is-a-shader.md
+      - Effect structure: effect-development/effect-structure.md
+      - OBS shading syntax: effect-development/shader-syntax.md
+      - OBS shader transpilation: effect-development/syntax/shader-transpilation.md
       - Transition Reference: effect-development/effect-transition-reference.md
       - Filter Reference: effect-development/effect-filter-reference.md
       - Parameters Reference: effect-development/param
-#        - Overview: effect-development/param/overview.md # TODO J'aime pas le nom -> trouver + clair
-#        - Audio Level: effect-development/param/audiolevel.md
-#        - Bool: effect-development/param/bool.md
-#        - Color with alpha: effect-development/param/color_alpha.md
-#        - Double: effect-development/param/double.md
-#        - Int: effect-development/param/int.md
-#        - List: effect-development/param/list_int.md
-#        - Image: effect-development/param/image.md
-#        - Source: effect-development/param/source.md

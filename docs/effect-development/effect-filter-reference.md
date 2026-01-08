@@ -7,12 +7,12 @@ Shaders are compiled code, and parameters are bound to them at run time by the g
 Shadertastic, for all it's filters, will bind and update at each frame following parameters:
 
 ```hlsl
-// Time since the shader is running. Goes from 0 to 1 for transition effects; goes from 0 to infinity for filter effects
+// Time since the shader is running. Goes from 0 to infinity for filter effects
 uniform float time;
 // Texture of the source (filters only)
 uniform texture2d image;
-// Intermediate texture where the previous step will be rendered (for multistep effects)
-uniform texture2d tex_interm;
+// Intermediate texture where the previous step will be rendered
+uniform texture2d tex_interm; // (for multistep effects)
 // Width of a pixel in the UV space
 uniform float upixel;
 // Height of a pixel in the UV space
