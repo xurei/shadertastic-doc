@@ -28,13 +28,18 @@ function parseParam(param_name, param_schema) {
 ${param_schema.markdownDescription.split('\n')[0]}
 
 ${param_schema.markdownDescription.split('\n').slice(1).join('\n')}
-
+`);
+	
+	if (param_schema.shaderparam) {
+		//language=markdown
+		out.push(`
 ## Shader Equivalent
 
 \`\`\`hlsl
-${param_schema.shaderparam.relaceAll(/`/g, '')} parameter_name;
+${param_schema.shaderparam.replace(/`/g, '')} parameter_name;
 \`\`\`
-`);
+		`);
+	}
 	
 	if (param_schema.example) {
 	//language=markdown
