@@ -32,7 +32,7 @@ ${param_schema.markdownDescription.split('\n').slice(1).join('\n')}
 ## Shader Equivalent
 
 \`\`\`hlsl
-${param_schema.shaderparam} parameter_name;
+${param_schema.shaderparam.relaceAll(/`/g, '')} parameter_name;
 \`\`\`
 `);
 	
