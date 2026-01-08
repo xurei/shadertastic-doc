@@ -60,6 +60,6 @@ This is the pixel shader code.
 It is written in the [OBS Shading Language](shader-syntax.md), which is a subset of HLSL and GLSL.
 
 By default, all shaders receive a pre-defined list of parameters. 
-This differs between [transitions](effect-transition.md) and [filters](effect-filter.md).
+This differs between [transitions](effect-transition-reference.md) and [filters](effect-filter-reference.md).
 
 See [Getting Started](getting-started.md) for examples of shader code.
