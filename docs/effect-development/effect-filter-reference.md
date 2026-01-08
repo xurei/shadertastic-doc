@@ -12,14 +12,14 @@ uniform float time;
 // Texture of the source (filters only)
 uniform texture2d image;
 // Intermediate texture where the previous step will be rendered
-uniform texture2d tex_interm; // (for multistep effects)
+uniform texture2d tex_interm; // (for multisteps effects)
 // Width of a pixel in the UV space
 uniform float upixel;
 // Height of a pixel in the UV space
 uniform float vpixel;
 // Seed for random functions
 uniform float rand_seed;
-// index of current step (for multistep effects)
+// index of current step (for multisteps effects)
 uniform int current_step;
 // number of steps (for multisteps effects)
 uniform int nb_steps;
