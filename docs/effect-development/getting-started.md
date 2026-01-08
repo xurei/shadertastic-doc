@@ -99,8 +99,8 @@ However, it is a good start to understand how everything works.
   Some parameters are automatically added to all filters (see [Filter Reference](effect-filter.md)).  
   Here, we will use the `image` parameter, which is a texture that contains the source being filtered.
 - At this point, you should have a filter that works. Let's check that.  
-  In OBS, create a source of your choice, and add a "Shadertastic Filter".
-  Select the effect "Color Adjust" in the effect dropdown.
+  In OBS, create a source of your choice, select it, and with "Filters" and "+" buttons,
+  add a Effect Filter of "Shadertastic" kind. Select the effect "Color Adjust" in the effect dropdown.
   ![Scren record of OBS with the template filter](getting-started-filter-1.gif)
   You should see the source being flipped horizontally. 
   This is the effect implemented in the template file. Now, let's change this with the behaviour we expect.
@@ -152,7 +152,7 @@ However, it is a good start to understand how everything works.
   }
   ```
   - Let's look at the changes we've made. 
-    In OBS, select the "Shadertastic Filter" you've previously created, and click the "Reload" button.
+    In OBS, select the filter "Shadertastic" you've previously created, and click the "Reload" button.
     (if you don't see it, make sure you have checked the `Developer Mode` in the Shadertastic Settings)
     ![Scren record of OBS with the color adjust filter](getting-started-filter-2.gif)
   - Congratulation! You just created your very first effect. 
