@@ -96,7 +96,7 @@ However, it is a good start to understand how everything works.
   }
   ```
   This file describes the filter and its parameters.  
-  Some parameters are automatically added to all filters (see [Filter Reference](effect-filter.md)).  
+  Some parameters are automatically added to all filters (see [Filter Reference](effect-filter-reference.md)).  
   Here, we will use the `image` parameter, which is a texture that contains the source being filtered.
 - At this point, you should have a filter that works. Let's check that.  
   In OBS, create a source of your choice, select it, and with "Filters" and "+" buttons,

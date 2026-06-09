@@ -10,4 +10,8 @@ yes | npx ts-json-schema-generator --markdown-description --validation-keywords 
 
 node scripts/jsonschema-to-doc.cjs
 
+
+python3 -m venv mkdocs_build_venv
+source mkdocs_build_venv/bin/activate
+pip3 install -r requirements.txt
 python3 -m mkdocs build

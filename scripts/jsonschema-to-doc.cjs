@@ -18,6 +18,7 @@ const params = Object.entries(jsonschema.definitions).filter(([key, meta]) => {
 
 
 function parseParam(param_name, param_schema) {
+	param_schema.markdownDescription = (param_schema.markdownDescription||'');
 	param_name = param_name.substr('param_'.length);
 	const out = [];
 	
@@ -81,6 +82,7 @@ function jsonSchemaToMarkdownTable(schema) {
 
 function addMarkdownTableLines(schema, prefix, /* Array */ lines) {
 	const requiredList = schema.required || [];
+	schema.properties = schema.properties || {};
 	console.log(schema);
 	console.log(schema.required, requiredList);
 	const props = Object.entries(schema.properties).map(([propName, prop]) => {
