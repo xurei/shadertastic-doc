@@ -1,3 +1,4 @@
 .idea/
 .vercel
 docs/effect-development/param/*.md
+!docs/effect-development/param/index.md
