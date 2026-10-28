@@ -17,6 +17,18 @@ const params = Object.entries(jsonschema.definitions).filter(([key, meta]) => {
 });
 
 
+
+// ${param_schema.shaderparam.replace(/`/g, '')} {parameter_name};
+// \`\`\`
+// 		`);
+// 	}
+// 	else if (param_schema.shaderparams) {
+// 		out.push(`
+// ## Shader Equivalent
+//
+// \`\`\`hlsl
+// ${param_schema.shaderparams.replace(/`/g, '')}
+
 function parseParam(param_name, param_schema) {
 	param_schema.markdownDescription = (param_schema.markdownDescription||'');
 	param_name = param_name.substr('param_'.length);

@@ -8,5 +8,3 @@ RUN pip install mkdocs-awesome-nav
 RUN apk upgrade --update-cache -a && apk add --no-cache curl bash npm && apk cache clean --purge
 RUN mkdir /.npm && chown -R 1000:1000 "/.npm"
 RUN npm i -g @adobe/jsonschema2md
-RUN echo "Node version: $(node --version)"
-RUN echo "NPM version: $(npm --version)"
